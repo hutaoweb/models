@@ -14,7 +14,9 @@ DEFAULT_SYSTEM_PROMPT_ZH = """\
 如果问题本身没有意义，或者与事实不符，请解释原因，而不是给出不正确的回答。如果你不知道答案，请直接说明，而不要提供虚假信息。"""
 
 
-def _contains_cjk(text):
+def _contains_chinese(text):
+    if not isinstance(text, str):
+        return False
     return bool(re.search(r"[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]", text))
 
 
@@ -23,7 +25,7 @@ def _get_system_prompt(pair):
         return pair["system_prompt"]
     if "system" in pair:
         return pair["system"]
-    if _contains_cjk(pair["input"]):
+    if _contains_chinese(pair["input"]):
         return DEFAULT_SYSTEM_PROMPT_ZH
     return DEFAULT_SYSTEM_PROMPT
 
